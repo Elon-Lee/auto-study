@@ -1,0 +1,13 @@
+{
+  "name": "auto-study",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "fs-extra": "^10.1.0",
+    "puppeteer-core": "^14.1.1"
+  }
+}
