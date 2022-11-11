@@ -94,31 +94,39 @@ const study = async (page, courses) => {
   for (let i = 0; i < courses.length; i++) {
     const { children } = courses[i];
     for (let x = 0; x < children.length; x++) {
-      const { type, href, id, title, status } = children[x];
+      try {
+        const {type, href, id, title, status} = children[x];
 
-      if (studyTypes.indexOf(type) === -1) continue;
-      if (status === 'full') continue;
+        if (studyTypes.indexOf(type) === -1) {
+        }
+        continue;
+        if (status === 'full') {
+        }
+        continue;
 
-      console.log(`${type} - ${id} - ${title}`);
+        console.log(`${type} - ${id} - ${title}`);
 
-      await page.goto(href, {
-        waitUntil: 'networkidle2' // 网络空闲说明加载完毕
-      });
-      console.log("page loaded...")
+        await page.goto(href, {
+          waitUntil: 'networkidle2' // 网络空闲说明加载完毕
+        });
+        console.log("page loaded...");
 
-      if (type === '参考资料') {
-        await studyMaterial(page);
+        if (type === '参考资料') {
+          await studyMaterial(page);
+        }
+
+        if (type === '音视频教材') {
+          await studyOnlineVideo(page);
+        }
+        //设置已观看
+        children[x].status = "full";
+        //更新json
+        await fse.writeFile('./data.json', JSON.stringify(courses, undefined, 2));
+        // 停留几秒钟
+        await page.waitForTimeout(Math.floor(Math.random() * 1000) + 3000);
+      } catch (e){
+        console.log("学习当前课程错误:自动学习下一章节:",e)
       }
-
-      if (type === '音视频教材') {
-        await studyOnlineVideo(page);
-      }
-      //设置已观看
-      children[x].status="full"
-      //更新json
-      await fse.writeFile('./data.json', JSON.stringify(courses, undefined, 2));
-      // 停留几秒钟
-      await page.waitForTimeout(Math.floor(Math.random() * 1000) + 3000);
     }
   }
 }
