@@ -96,16 +96,13 @@ const study = async (page, courses) => {
     for (let x = 0; x < children.length; x++) {
       try {
         const {type, href, id, title, status} = children[x];
-
         if (studyTypes.indexOf(type) === -1) {
+          continue;
         }
-        continue;
         if (status === 'full') {
+          continue;
         }
-        continue;
-
         console.log(`${type} - ${id} - ${title}`);
-
         await page.goto(href, {
           waitUntil: 'networkidle2' // 网络空闲说明加载完毕
         });
@@ -114,7 +111,6 @@ const study = async (page, courses) => {
         if (type === '参考资料') {
           await studyMaterial(page);
         }
-
         if (type === '音视频教材') {
           await studyOnlineVideo(page);
         }

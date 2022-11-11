@@ -57,8 +57,10 @@ async function  autoStudy()  {
     newData = await getData(page);
   }
 
+  console.log("start to study")
   await study(page, newData);
 
+  console.log("start to getData")
   // 获取最新进度
   await getData(page);
 
